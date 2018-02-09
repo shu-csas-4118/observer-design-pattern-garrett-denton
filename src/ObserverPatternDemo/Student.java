@@ -7,13 +7,15 @@ public class Student {
 	private String lastName;
 	private String email;
 	private int idNumber;
+	private ArrayList<String> courses;
 	private ArrayList<IObserver> observers;
 	
-	public Student(String firstName, String lastName, int idNumber, String email) {
+	public Student(String firstName, String lastName, int idNumber, String email, ArrayList<String> courses) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.idNumber = idNumber;
 		this.email = email;
+		this.courses = courses;
 		this.observers = new ArrayList<IObserver>();
 	}
 	
@@ -27,7 +29,7 @@ public class Student {
 	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-		notifyAllObservers();
+		notifyFirstNameObserver();
 	}
 	
 	public String getLastName() {
@@ -44,21 +46,35 @@ public class Student {
 	
 	public void setIdNumber(int idNumber) {
 		this.idNumber = idNumber;
-		notifyAllObservers();
+		notifyIdNumberObserver();
 	}	
 	
 	public void setEmail(String email) {
 		this.email = email;
-		notifyAllObservers();
+		notifyEmailObserver();
 	}
 	
 	public String getEmail() {
 		return this.email;
 	}
 	
+	public void addCourse(String course) {
+		this.courses.add(course);
+		notifyCoursesObserver();
+	}
+	
+	public void removeCourse(String course) {
+		this.courses.remove(course);
+		notifyCoursesObserver();
+	}
+	
+	public String getCourses() {
+		return this.courses.toString();
+	}
+	
 	public void attachObserver(IObserver observer) {
 		this.observers.add(observer);
-	}
+	} 
 	
 	public void notifyAllObservers() {
 		for(IObserver observer: this.observers) {
@@ -66,5 +82,24 @@ public class Student {
 		}
 	}
 	
+	public void notifyIdNumberObserver() {
+		IObserver observer = observers.get(0);
+		observer.update(this);
+	}
+	
+	public void notifyFirstNameObserver() {
+		IObserver observer = observers.get(1);
+		observer.update(this);
+	}
+	
+	public void notifyEmailObserver() {
+		IObserver observer = observers.get(2);
+		observer.update(this);
+	}
+	
+	public void notifyCoursesObserver() {
+		IObserver observer = observers.get(3);
+		observer.update(this);
+	}
 	
 }
